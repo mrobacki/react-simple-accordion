@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+const faqs = [
+  {
+    title: "Where are these chairs assembled?",
+    text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium, quaerat temporibus quas dolore provident nisi ut aliquid ratione beatae sequi aspernatur veniam repellendus.",
+  },
+  {
+    title: "How long do I have to return my chair?",
+    text: "Pariatur recusandae dignissimos fuga voluptas unde optio nesciunt commodi beatae, explicabo natus.",
+  },
+  {
+    title: "Do you ship to countries outside the EU?",
+    text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
+  },
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Accordion data={faqs} />
+    </div>
+  );
+}
+
+function Accordion({ data }) {
+  return (
+    <div className="accordion">
+      {data.map((faq, i) => (
+        <AccordionItem faq={faq} key={i} itemKey={i + 1} />
+      ))}
+    </div>
+  );
+}
+function AccordionItem({ faq, itemKey }) {
+  const formattedItemKey = String(itemKey).padStart(2, "0");
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div
+      className={`item ${isOpen ? "open" : ""}`}
+      onClick={() => setIsOpen((is) => !is)}
+    >
+      <span className="number">{formattedItemKey}</span>
+      <span className="title">{faq.title}</span>
+      <span className="icon">{!isOpen ? "+" : "-"}</span>
+      {isOpen && <div className="content-box">{faq.text}</div>}
     </div>
   );
 }
