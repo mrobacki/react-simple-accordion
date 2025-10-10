@@ -30,30 +30,32 @@ function Accordion({ data }) {
     <div className="accordion">
       {data.map((faq, i) => (
         <AccordionItem
-          faq={faq}
+          title={faq.title}
           key={i}
           itemKey={i + 1}
           currentOpen={currentOpen}
           onOpen={setCurrentOpen}
-        />
+        >
+          {faq.text}
+        </AccordionItem>
       ))}
     </div>
   );
 }
-function AccordionItem({ faq, itemKey, currentOpen, onOpen }) {
+function AccordionItem({ title, itemKey, currentOpen, onOpen, children }) {
   const formattedItemKey = String(itemKey).padStart(2, "0");
   const isOpen = itemKey === currentOpen;
 
   function handleToggle() {
-    isOpen ? onOpen(null) : onOpen(itemKey);
+    onOpen(isOpen ? null : itemKey);
   }
 
   return (
     <div className={`item ${isOpen ? "open" : ""}`} onClick={handleToggle}>
       <span className="number">{formattedItemKey}</span>
-      <span className="title">{faq.title}</span>
+      <span className="title">{title}</span>
       <span className="icon">{!isOpen ? "+" : "-"}</span>
-      {isOpen && <div className="content-box">{faq.text}</div>}
+      {isOpen && <div className="content-box">{children}</div>}
     </div>
   );
 }
